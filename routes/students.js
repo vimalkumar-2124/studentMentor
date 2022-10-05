@@ -8,9 +8,13 @@ router.get('/', async(req,res) => {
     try {
         const db = await client.db(dbName)
         let student = await db.collection('students').find().toArray()
+        let students = []
+        student.map((ele) => {
+            students.push(ele.name)
+        })
         res.send({
             statusCode: 200,
-            student
+            students
         })
     }
     catch(err){
@@ -26,15 +30,43 @@ router.get('/', async(req,res) => {
     
 })
 
+router.get('/withoutmentor', async(req,res) => {
+    await client.connect()
+    try {
+        const db = await client.db(dbName)
+        let student = await db.collection('students').find().toArray()
+        let students = []
+        student.map((ele) => {
+            if(!ele.mentorAssigned)
+                students.push(ele.name)
+        })
+        res.send({
+            statusCode: 200,
+            students
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.send({
+            statusCode:500,
+            message:"Internal server error"
+        })
+    }
+    finally{
+        client.close()
+    }
+    
+})
 router.post('/', async(req,res) => {
     await client.connect()
     try {
         const db = await client.db(dbName)
         let student = await db.collection('students').insertOne(req.body)
-        students.push(student)
         res.send({
-            statusCode: 201,
-            message : "Created successfully"
+            statusCode: 200,
+            message : "Student created successfully",
+            student
+
         })
     }
     catch(err){

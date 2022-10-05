@@ -9,20 +9,21 @@ router.post('/newMentor', async(req,res) => {
     await client.connect()
     try {
         const db = await client.db(dbName)
-        let mentor = await db.collection('mentors').findOne({_id:mongoDb.ObjectId(req.body.mentorId)})
+        // let mentor = await db.collection('mentors').findOne({_id:mongoDb.ObjectId(req.body.mentorId)})
+        let mentor = await db.collection('mentors').findOne({name:req.body.mentor})
         mentor.studentsAssigned = [
             ...mentor.studentsAssigned,
-            ...req.body.studentsArray
+            ...req.body.students
         ]
-        await db.collection('mentors').updateOne({_id:mongoDb.ObjectId(req.body.mentorId)},{$set:{studentsAssigned:mentor.studentsAssigned}})
-        req.body.studentsArray.map(async(stud) => {
+        await db.collection('mentors').updateOne({name:req.body.mentor},{$set:{studentsAssigned:mentor.studentsAssigned}})
+        req.body.students.map(async(stud) => {
             const temp = await db.collection('students').find({name:stud})
-            temp.mentorAssigned = req.body.mentorId
+            temp.mentorAssigned = req.body.mentor
             await db.collection('students').updateOne({name:stud}, {$set :{mentorAssigned:temp.mentorAssigned}})
         })
         res.send({
-            statusCode: 201,
-            message: "Mentor added to student",
+            statusCode: 200,
+            message: "Mentor added to students",
             mentor
         })
     }
