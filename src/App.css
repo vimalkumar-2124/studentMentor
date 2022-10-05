@@ -1,0 +1,23 @@
+body{
+  background-color: #212529;
+}
+
+.home{
+  color: white;
+  font-size: 2em;
+}
+.links:hover{
+  color: white;
+}
+
+.mentors-wrapper,
+.students-wrapper{
+  color: white;
+  font-size: 2em;
+  margin: auto;
+}
+
+
+#multiple-checkbox{
+  color: black;
+}
