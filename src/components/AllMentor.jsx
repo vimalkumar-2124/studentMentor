@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { ContextApi} from '../App';
 import axios from 'axios';
 export default function AllMentor() {
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
     let contextApi = useContext(ContextApi)
     let [mentorName, setMentorName] = useState([])
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function AllMentor() {
     let getData = async() => {
       let res = await axios.get(`${contextApi.apiUrl}/mentors`)
       if(res.data.statusCode === 200)
-        setMentorName(res.data.mentorsArr)
+        setMentorName(res.data.mentors)
     }
     // let handleDelete = async(i) =>{
     //     // let data = [...context.mentorName]
@@ -40,7 +40,7 @@ export default function AllMentor() {
                 mentorName.map((e,id)=>{
                     return <tr className='home' key={id}>
                         <td>{id+1}</td>
-                        <td >{e}</td>
+                        <td >{e.name}</td>
                         {/* <td>
                             <Button variant='primary' onClick={()=>navigate(`/edit-mentor/${e.id}`)}> <EditIcon/></Button>
                             &nbsp;

@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import AddStudent from './components/AddStudent';
 import AddMentor from './components/AddMentor';
 import AssignStudents from './components/AssignStudents';
-// import ChangeMentor from './components/ChangeMentor';
+import ChangeMentor from './components/ChangeMentor';
 // import ViewMentor from './components/ViewMentor';
 import AllStudent from './components/AllStudent';
 import AllMentor from './components/AllMentor';
@@ -31,7 +31,7 @@ function App() {
       <Route path='add-student' element={<AddStudent/>} />
       <Route path='/add-mentor' element={<AddMentor />}></Route>
       <Route path='/assign-students' element={<AssignStudents />}></Route>
-      {/* <Route path='change-mentor' element={<ChangeMentor />}></Route> */}
+      <Route path='/change-mentor' element={<ChangeMentor />}></Route>
       {/* <Route path='view-mentor' element={<ViewMentor />}></Route> */}
       {/* <Route path="/edit-student/:id" element={<EditStudent/>}></Route> */}
       {/* <Route path="/edit-mentor/:id" element={<EditMentor/>}></Route> */}

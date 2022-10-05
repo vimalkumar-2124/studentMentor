@@ -42,7 +42,7 @@ const getData = async() => {
                 studentName.map((e,id)=>{
                     return <tr className='home' key={id}>
                         <td>{id + 1}</td>
-                        <td >{e}</td>
+                        <td >{e.name}</td>
                         {/* <td>
                             <Button variant='primary' onClick={()=>navigate(`/edit-student/${e.id}`)}> <EditIcon/></Button>
                             &nbsp;
