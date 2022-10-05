@@ -9,16 +9,15 @@ router.post('/newMentor', async(req,res) => {
     await client.connect()
     try {
         const db = await client.db(dbName)
-        // let mentor = await db.collection('mentors').findOne({_id:mongoDb.ObjectId(req.body.mentorId)})
-        let mentor = await db.collection('mentors').findOne({name:req.body.mentor})
+        let mentor = await db.collection('mentors').findOne({_id:mongoDb.ObjectId(req.body.mentorId)})
         mentor.studentsAssigned = [
             ...mentor.studentsAssigned,
             ...req.body.students
         ]
-        await db.collection('mentors').updateOne({name:req.body.mentor},{$set:{studentsAssigned:mentor.studentsAssigned}})
+        await db.collection('mentors').updateOne({_id:mongoDb.ObjectId(req.body.mentorId)},{$set:{studentsAssigned:mentor.studentsAssigned}})
         req.body.students.map(async(stud) => {
-            const temp = await db.collection('students').find({name:stud})
-            temp.mentorAssigned = req.body.mentor
+            const temp = await db.collection('students').findOne({name:stud})
+            temp.mentorAssigned = req.body.mentorId
             await db.collection('students').updateOne({name:stud}, {$set :{mentorAssigned:temp.mentorAssigned}})
         })
         res.send({
@@ -34,9 +33,9 @@ router.post('/newMentor', async(req,res) => {
             err
         })
     }
-    finally{
-        client.close()
-    }
+    // finally{
+    //     await client.close()
+    // }
 })
 
 router.post('/modifyMentor', async(req,res) => {
@@ -60,8 +59,7 @@ router.post('/modifyMentor', async(req,res) => {
                 return name._id === req.body.studentId
             }
             const indexpos = newAssigned.findIndex(isStudentId)
-            newAssigned.splice(indexpos,1)
-            oldMentor.studentsAssigned = newAssigned
+            oldMentor.studentsAssigned = newAssigned.splice(indexpos,1)
             // console.log(oldMentor.studentsAssigned)
         }
         await db.collection('mentors').updateOne({_id:mongoDb.ObjectId(oldMentorId)},{$set:{studentsAssigned:oldMentor.studentsAssigned}})

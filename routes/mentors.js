@@ -8,14 +8,14 @@ router.get('/', async(req,res) => {
     await client.connect()
     try {
         const db = await client.db(dbName)
-        let mentorsArr = []
+        // let mentorsArr = []
         let mentors = await db.collection('mentors').find().toArray()
-        mentors.map((ele) => {
-            mentorsArr.push(ele.name)
-        })
+        // mentors.map((ele) => {
+        //     mentorsArr.push(ele.name)
+        // })
         res.send({
             statusCode: 200,
-            mentorsArr
+            mentors
         })
     }
     catch(err){
